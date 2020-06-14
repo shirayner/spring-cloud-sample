@@ -19,6 +19,7 @@
 
     <modules>
         <module>sample-discovery</module>
+        <module>sample-config</module>
     </modules>
 
     <properties>
