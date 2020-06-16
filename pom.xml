@@ -20,6 +20,7 @@
     <modules>
         <module>sample-discovery</module>
         <module>sample-config</module>
+        <module>sample-feign</module>
     </modules>
 
     <properties>

@@ -65,9 +65,9 @@ P2P的复制模式：
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -92,7 +92,7 @@ P2P的复制模式：
 
 ### 2.Eureka 注册中心
 
-#### 2.1 添加依赖
+#### 2.1 引入依赖
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -109,18 +109,23 @@ P2P的复制模式：
     <artifactId>eureka-server</artifactId>
 
     <dependencies>
+        <!-- 引入 eureka-server 依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>
 ```
 
 
 
-#### 2.2 启动类
+
+
+#### 2.2 修改配置
+
+##### 2.2.1 启动类
 
 在启动类上添加`@EnableEurekaServer`注解即可启用 eureka 注册中心
 
@@ -139,7 +144,7 @@ public class EurekaServerApplication {
 
 
 
-#### 2.3 application.yml
+##### 2.2.2 application.yml
 
 ```yml
 server:
@@ -172,7 +177,7 @@ eureka:
 
 
 
-#### 2.4 启动注册中心
+#### 2.3 启动注册中心
 
 此时启动`EurekaServerApplication` ，然后浏览器访问 http://localhost:8761/
 
@@ -184,7 +189,7 @@ eureka:
 
 ### 3.Eureka 客户端
 
-#### 3.1 添加依赖
+#### 3.1 引入依赖
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -205,6 +210,7 @@ eureka:
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- 引入 eureka-client 依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -216,7 +222,11 @@ eureka:
 
 
 
-#### 3.2 启动类
+
+
+#### 3.2 修改配置
+
+##### 3.2.1 启动类
 
 在启动类上添加`@EnableDiscoveryClient`注解即可启用 eureka client 服务发现
 
@@ -235,9 +245,7 @@ public class EurekaClientApplication {
 
 
 
-
-
-#### 3.3 application.yml
+##### 3.2.2 application.yml
 
 ```yml
 server:
@@ -251,6 +259,81 @@ eureka:
     fetch-registry: true #获取注册实例列表
     service-url:
       defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
+```
+
+
+
+#### 3.3 业务实现
+
+（1）创建一个Controller 供后面Feign的章节调用
+
+```java
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    /**
+     * get 路径请求参数传递
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public String getUser1(@PathVariable("id") Long id) throws Exception {
+        if(id == null || id <= 0){
+            throw new Exception("invalid parameter: id="+ id);
+        }
+
+        return "the user's id is: "+id;
+    }
+
+    /**
+     * get 请求参数传递
+     * @param name
+     * @return
+     */
+    @GetMapping("/get2")
+    public String getUser2(@RequestParam String name, @RequestHeader String token) {
+        return "the user's name is: "+name +" and token is:"+ token;
+    }
+
+    /**
+     *  post 请求参数传递
+     * @param dto
+     * @return
+     */
+    @PostMapping("/get3")
+    public UserDto getUser3(@RequestBody UserDto dto) {
+        return dto;
+    }
+
+}
+
+```
+
+
+
+
+
+（2）UserDto
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
+
+    private Long id;
+
+    private String name;
+
+    private Integer age;
+
+    private Date creationDate;
+
+    private Date lastUpdateDate;
+
+}
+
 ```
 
 
