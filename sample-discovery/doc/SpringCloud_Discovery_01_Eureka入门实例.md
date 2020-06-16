@@ -122,6 +122,8 @@ P2P的复制模式：
 
 #### 2.2 启动类
 
+在启动类上添加`@EnableEurekaServer`注解即可启用 eureka 注册中心
+
 ```java
 @EnableEurekaServer
 @SpringBootApplication
@@ -142,19 +144,29 @@ public class EurekaServerApplication {
 ```yml
 server:
   port: 8761
-
+spring:
+  application:
+    name: eurka-server   #指定服务名
 eureka:
   instance:
     hostname: localhost
+  server:
+    enable-self-preservation: false         #是否开启自我保护模式
+    wait-time-in-ms-when-sync-empty: 60000  #服务注册表清理间隔（单位毫秒，默认是60*1000）
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: false  #服务注册，是否将自己注册到Eureka服务注册中心，单机版本时，为false就好
+    fetch-registry: false        #服务发现，是否从Eureka中获取注册信息
+    # Eureka客户端与Eureka服务端的交互地址，高可用状态配置对方的地址，单机状态配置自己（如果不配置则默认本机8761端口）
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  server:
-    wait-time-in-ms-when-sync-empty: 0
-    enable-self-preservation: false
 ```
+
+
+
+> - 更多的可配置选项，请查看`spring-cloud-starter-netflix-eureka-server`以及`spring-cloud-starter-netflix-eureka-client`工程下的`spring-configuration-metadata.json`文件，在这个json文件中，我们可以看到有哪些可选配置项，配置项的描述，以及配置项是对应那个Java类的哪个属性
+> - 相关配置属性类为：EurekaInstanceConfigBean、EurekaServerConfigBean、EurekaClientConfigBean
+
+
 
 
 
@@ -206,6 +218,8 @@ eureka:
 
 #### 3.2 启动类
 
+在启动类上添加`@EnableDiscoveryClient`注解即可启用 eureka client 服务发现
+
 ```java
 @EnableDiscoveryClient
 @SpringBootApplication
@@ -230,13 +244,13 @@ server:
   port: 8081 #运行端口号
 spring:
   application:
-    name: eureka-client #服务名称
+    name: eureka-client #指定服务名
 eureka:
   client:
     register-with-eureka: true #注册到Eureka的注册中心
     fetch-registry: true #获取注册实例列表
     service-url:
-      defaultZone: http://localhost:8761/eureka/ #配置注册中心地址
+      defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
 ```
 
 
@@ -248,3 +262,12 @@ eureka:
 此时启动`EurekaClientApplication` ，然后浏览器访问 http://localhost:8761/ ， 发现Eureka客户端已注册到注册中心
 
 ![image-20200616224109736](images/image-20200616224109736.png)
+
+
+
+
+
+
+
+
+

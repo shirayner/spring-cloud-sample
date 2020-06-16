@@ -1,14 +1,17 @@
 server:
   port: 8761
-
+spring:
+  application:
+    name: eurka-server   #指定服务名
 eureka:
   instance:
     hostname: localhost
+  server:
+    enable-self-preservation: false         #是否开启自我保护模式
+    wait-time-in-ms-when-sync-empty: 60000  #服务注册表清理间隔（单位毫秒，默认是60*1000）
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: false  #服务注册，是否将自己注册到Eureka服务注册中心，单机版本时，为false就好
+    fetch-registry: false        #服务发现，是否从Eureka中获取注册信息
+    # Eureka客户端与Eureka服务端的交互地址，高可用状态配置对方的地址，单机状态配置自己（如果不配置则默认本机8761端口）
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  server:
-    wait-time-in-ms-when-sync-empty: 0
-    enable-self-preservation: false
