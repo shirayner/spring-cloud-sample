@@ -60,7 +60,6 @@ P2P的复制模式：
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
     </properties>
 
@@ -74,13 +73,6 @@ P2P的复制模式：
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -98,7 +90,7 @@ P2P的复制模式：
 
 
 
-### 2.注册中心
+### 2.Eureka 注册中心
 
 #### 2.1 添加依赖
 
@@ -122,6 +114,7 @@ P2P的复制模式：
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
+    
 </project>
 ```
 
@@ -167,6 +160,8 @@ eureka:
 
 
 
+#### 2.4 启动注册中心
+
 此时启动`EurekaServerApplication` ，然后浏览器访问 http://localhost:8761/
 
 ![image-20200614204650313](images/image-20200614204650313.png)
@@ -179,11 +174,77 @@ eureka:
 
 #### 3.1 添加依赖
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sample-discovery-eureka</artifactId>
+        <groupId>com.ray.study.sample</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eureka-client</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+
+
+#### 3.2 启动类
+
+```java
+@EnableDiscoveryClient
+@SpringBootApplication
+public class EurekaClientApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaClientApplication.class, args);
+    }
+
+}
+
+```
 
 
 
 
 
+#### 3.3 application.yml
+
+```yml
+server:
+  port: 8081 #运行端口号
+spring:
+  application:
+    name: eureka-client #服务名称
+eureka:
+  client:
+    register-with-eureka: true #注册到Eureka的注册中心
+    fetch-registry: true #获取注册实例列表
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #配置注册中心地址
+```
 
 
 
+
+
+#### 3.4 启动 Eureka 客户端
+
+此时启动`EurekaClientApplication` ，然后浏览器访问 http://localhost:8761/ ， 发现Eureka客户端已注册到注册中心
+
+![image-20200616224109736](images/image-20200616224109736.png)
