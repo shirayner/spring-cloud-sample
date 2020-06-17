@@ -2,27 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <artifactId>spring-cloud-sample</artifactId>
+        <groupId>com.ray.study.sample</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ray.study.sample</groupId>
-    <artifactId>spring-cloud-sample</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>sample-hystrix</artifactId>
     <packaging>pom</packaging>
-
-    <description>spring cloud sample</description>
-
     <modules>
-        <module>sample-discovery</module>
-        <module>sample-config</module>
-        <module>sample-feign</module>
-        <module>sample-ribbon</module>
-        <module>sample-hystrix</module>
+        <module>sample-consumer-feign-hystrix</module>
     </modules>
 
     <properties>
@@ -31,20 +21,19 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <docker.image.prefix>shirayner</docker.image.prefix>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>

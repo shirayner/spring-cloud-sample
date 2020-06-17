@@ -1,0 +1,24 @@
+server:
+  port: 8086 #运行端口号
+spring:
+  application:
+    name: consumer-feign-hystrix #指定服务名
+
+#配置eureka
+eureka:
+  client:
+    register-with-eureka: true #注册到Eureka的注册中心
+    fetch-registry: true #获取注册实例列表
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
+
+#配置feign，连接超时及读取超时配置
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+  hystrix:
+    enabled: true  # 在D版本之后，需要手动开启 feign的 hystrix
