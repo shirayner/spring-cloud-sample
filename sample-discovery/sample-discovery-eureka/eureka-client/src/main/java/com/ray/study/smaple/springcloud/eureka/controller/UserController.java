@@ -1,6 +1,7 @@
 package com.ray.study.smaple.springcloud.eureka.controller;
 
 import com.ray.study.smaple.springcloud.eureka.controller.dto.UserDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,6 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Value("${server.port}")
+    private String port;
+
+    @GetMapping("/hello")
+    public String hello() throws Exception {
+        return "the service on prot:"+port+" says hello to the current user!";
+    }
 
     /**
      * get 路径请求参数传递

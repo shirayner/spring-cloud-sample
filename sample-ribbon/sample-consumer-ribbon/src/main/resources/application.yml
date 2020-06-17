@@ -1,8 +1,8 @@
 server:
-  port: 8084 #运行端口号
+  port: 8085 #运行端口号
 spring:
   application:
-    name: consumer-openfeign #指定服务名
+    name: consumer-ribbon #指定服务名
 
 #配置eureka
 eureka:
@@ -11,12 +11,3 @@ eureka:
     fetch-registry: true #获取注册实例列表
     service-url:
       defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
-
-#配置feign，连接超时及读取超时配置
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic

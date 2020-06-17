@@ -161,7 +161,7 @@ public class OpenFeignApplication {
 
 ```yml
 server:
-  port: 8082 #运行端口号
+  port: 8084 #运行端口号
 spring:
   application:
     name: consumer-openfeign #指定服务名
@@ -341,9 +341,9 @@ public class UserDto {
 
 （2）然后启动 `consumer-openfeign`
 
-（3）浏览器访问 http://localhost:8082/user/get ，发现成功通过 FeignClient 调用了  `eureka-client`服务的API
+（3）浏览器访问 http://localhost:8084/user/get ，发现成功通过 FeignClient 调用了  `eureka-client`服务的API
 
-![image-20200617005315998](images/image-20200617005315998.png)
+![image-20200617232002130](images/image-20200617232002130.png)
 
 
 

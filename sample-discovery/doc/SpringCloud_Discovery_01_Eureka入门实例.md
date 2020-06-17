@@ -272,6 +272,14 @@ eureka:
 @RequestMapping("/user")
 public class UserController {
 
+    @Value("${server.port}")
+    private String port;
+
+    @GetMapping("/hello")
+    public String hello() throws Exception {
+        return "the service on prot:"+port+" says hello to the current user!";
+    }
+
     /**
      * get 路径请求参数传递
      * @param id
