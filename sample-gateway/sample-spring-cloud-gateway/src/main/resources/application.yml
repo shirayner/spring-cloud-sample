@@ -1,0 +1,22 @@
+server:
+  port: 8087 #运行端口号
+
+spring:
+  application:
+    name: spring-cloud-gateway #指定服务名
+
+## 配置gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true   # 是否与服务发现组件进行结合，通过serviceId转发到具体的服务实例。默认为false,若为true便开启基于服务发现的路由规则
+          lowerCaseServiceId: true  # 当注册中心为Eureka时，设置为true表示开启小写的serviceId进行基于服务路由的转发
+
+#配置eureka
+eureka:
+  client:
+    register-with-eureka: true #注册到Eureka的注册中心
+    fetch-registry: true #获取注册实例列表
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
