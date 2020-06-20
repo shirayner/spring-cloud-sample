@@ -24,6 +24,7 @@
         <module>sample-ribbon</module>
         <module>sample-hystrix</module>
         <module>sample-gateway</module>
+        <module>sample-tracing</module>
     </modules>
 
 </project>

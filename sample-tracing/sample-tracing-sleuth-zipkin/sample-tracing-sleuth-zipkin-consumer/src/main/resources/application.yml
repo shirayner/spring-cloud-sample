@@ -1,0 +1,34 @@
+server:
+  port: 8089 #运行端口号
+
+spring:
+  application:
+    name: sleuth-zipkin-consumer #指定服务名
+  #配置 sleuth 和 zipkin
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0 # 将采样比例设置为 1.0，也就是全部都需要。默认是 0.1
+    zipkin:
+      base-url: http://localhost:9411/ # 指定了 Zipkin 服务器的地址
+
+#配置eureka
+eureka:
+  client:
+    register-with-eureka: true #注册到Eureka的注册中心
+    fetch-registry: true #获取注册实例列表
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ #指定注册中心地址
+
+#配置feign，连接超时及读取超时配置
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+  hystrix:
+    enabled: true  # 在D版本之后，需要手动开启 feign的 hystrix
