@@ -684,3 +684,4 @@ public class ProviderController {
 spring.cloud.nacos.config.ext-config[0].group=provider
 ```
 
+

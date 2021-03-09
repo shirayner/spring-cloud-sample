@@ -1,0 +1,22 @@
+server:
+  port: 8086 #运行端口号
+spring:
+  application:
+    name: consumer-cb-sentinel #指定服务名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置sentinel dashboard地址
+        port: 8719
+
+service-url:
+  user-service: http://nacos-user-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
